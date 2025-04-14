@@ -338,6 +338,7 @@ public:
         port,
         // This algorithm distributes all new connections to listen_options::fixed_cpu shard only.
         fixed,
+	src_ip,
         default_ = connection_distribution
     };
     /// Constructs a \c server_socket without being bound to any address
