@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM ubuntu:mantic
+FROM ubuntu:24.04
 
 RUN --mount=type=bind,source=./install-dependencies.sh,target=/install-dependencies.sh \
     apt-get update && apt-get install -y \

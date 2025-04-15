@@ -842,9 +842,18 @@ public:
 
     /// Creates a channel that is bound to the specified local address. It can be used to
     /// communicate with addresses that belong to the family of \param local.
-    posix_datagram_channel(socket_address local)
+    posix_datagram_channel(socket_address local, udp_channel_options opts = {})
         : _recv(is_inet(local.family())), _closed(false) {
         auto fd = create_socket(local.family());
+        
+        if (opts.reuse_address) {
+            fd.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1);
+        }
+
+        if (opts.reuse_port) {
+            fd.setsockopt(SOL_SOCKET, SO_REUSEPORT, 1);
+        }
+
         fd.bind(local.u.sa, local.addr_length);
 
         _address = fd.get_address();
@@ -904,8 +913,8 @@ posix_network_stack::make_unbound_datagram_channel(sa_family_t family) {
 }
 
 datagram_channel
-posix_network_stack::make_bound_datagram_channel(const socket_address& local) {
-    return datagram_channel(std::make_unique<posix_datagram_channel>(local));
+posix_network_stack::make_bound_datagram_channel(const socket_address& local, udp_channel_options opts) {
+    return datagram_channel(std::make_unique<posix_datagram_channel>(local, opts));
 }
 
 bool
