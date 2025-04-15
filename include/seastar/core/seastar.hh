@@ -75,6 +75,7 @@ class socket;
 class connected_socket;
 class socket_address;
 struct listen_options;
+struct udp_channel_options;
 enum class transport;
 
 // file.hh
@@ -204,6 +205,16 @@ net::datagram_channel make_unbound_datagram_channel(sa_family_t family);
 /// \return a \ref net::datagram_channel object for sending/receiving datagrams
 /// in a specified address family.
 net::datagram_channel make_bound_datagram_channel(const socket_address& local);
+
+/// Creates a datagram_channel object suitable for sending and receiving
+/// datagrams to/from destinations that belong to the provided address family.
+/// Supported address families: AF_INET, AF_INET6 and AF_UNIX.
+///
+/// \param local local address to bind to
+///
+/// \return a \ref net::datagram_channel object for sending/receiving datagrams
+/// in a specified address family.
+net::datagram_channel make_bound_datagram_channel(const socket_address& local, udp_channel_options opts);
 
 /// @}
 

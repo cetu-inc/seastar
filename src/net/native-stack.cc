@@ -175,7 +175,7 @@ public:
     virtual ::seastar::socket socket() override;
     virtual udp_channel make_udp_channel(const socket_address& addr) override;
     virtual net::datagram_channel make_unbound_datagram_channel(sa_family_t) override;
-    virtual net::datagram_channel make_bound_datagram_channel(const socket_address& local) override;
+    virtual net::datagram_channel make_bound_datagram_channel(const socket_address& local, udp_channel_options opts = {}) override;
     virtual future<> initialize() override;
     static future<std::unique_ptr<network_stack>> create(const program_options::option_group& opts) {
         auto ns_opts = dynamic_cast<const native_stack_options*>(&opts);
@@ -224,7 +224,7 @@ net::datagram_channel native_network_stack::make_unbound_datagram_channel(sa_fam
     return _inet.get_udp().make_channel({});
 }
 
-net::datagram_channel native_network_stack::make_bound_datagram_channel(const socket_address& local) {
+net::datagram_channel native_network_stack::make_bound_datagram_channel(const socket_address& local, udp_channel_options opts) {
     return _inet.get_udp().make_channel(local);
 }
 
