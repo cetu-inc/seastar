@@ -40,7 +40,7 @@ private:
 public:
     void start(uint16_t port) {
         ipv4_addr listen_addr{port};
-        _chan = make_bound_datagram_channel(listen_addr);
+        _chan = make_bound_datagram_channel(listen_addr, {.reuse_port = true});
 
         _stats_timer.set_callback([this] {
             std::cout << "Out: " << _n_sent << " pps" << std::endl;
@@ -51,6 +51,7 @@ public:
         // Run server in background.
         _task = keep_doing([this] {
             return _chan->receive().then([this] (datagram dgram) {
+                std::cout << "Received datagram from " << dgram.get_src() << " On: " << this_shard_id() << std::endl;
                 return _chan->send(dgram.get_src(), std::move(dgram.get_data())).then([this] {
                     _n_sent++;
                 });

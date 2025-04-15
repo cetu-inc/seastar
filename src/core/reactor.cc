@@ -4900,7 +4900,11 @@ net::datagram_channel make_unbound_datagram_channel(sa_family_t family) {
 }
 
 net::datagram_channel make_bound_datagram_channel(const socket_address& local) {
-    return engine().net().make_bound_datagram_channel(local);
+    return make_bound_datagram_channel(local, {});
+}
+
+net::datagram_channel make_bound_datagram_channel(const socket_address& local, udp_channel_options opts) {
+    return engine().net().make_bound_datagram_channel(local, opts);
 }
 
 void reactor::add_high_priority_task(task* t) noexcept {
