@@ -324,9 +324,9 @@ public:
     }
     void uninitialized_set(internal::monostate) {
     }
-    void uninitialized_set(std::tuple<>&& v) {
+    void uninitialized_set(std::tuple<>&&) {
     }
-    void uninitialized_set(const std::tuple<>& v) {
+    void uninitialized_set(const std::tuple<>&) {
     }
     internal::monostate& uninitialized_get() {
         return _v;
