@@ -23,6 +23,7 @@
 
 #ifndef SEASTAR_MODULE
 #include <boost/program_options.hpp>
+#include <boost/type.hpp>
 #include <optional>
 #include <stack>
 #endif
